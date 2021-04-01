@@ -34,7 +34,6 @@ var bullet_aos = Math.PI * 0.25;
 var asp = (window.innerHeight / surface.height) * 1.0;
 surface.style.height = surface.height * asp;
 surface.style.width = surface.width * asp;
-var xdelta = window.innerWidth * 0.5 - surface.width * asp * 0.5;
 
 
 // Textures
@@ -57,7 +56,7 @@ addEventListener(
 	'mousemove',
 	function (e)
 	{
-		mouse_x = e.pageX / asp - xdelta;
+		mouse_x = e.pageX / asp;
 		mouse_y = e.pageY / asp;
 	}
 )
@@ -89,7 +88,7 @@ addEventListener(
 	'touchmove',
 	function (e)
 	{
-		mouse_x = e.changedTouches[0].pageX / asp - xdelta;
+		mouse_x = e.changedTouches[0].pageX / asp;
 		mouse_y = e.changedTouches[0].pageY / asp;
 	}
 )
@@ -100,7 +99,7 @@ addEventListener(
 	{
 		mouse_check = 1
 		
-		mouse_x = e.changedTouches[0].pageX / asp - xdelta;
+		mouse_x = e.changedTouches[0].pageX / asp;
 		mouse_y = e.changedTouches[0].pageY / asp;
 	}
 )
