@@ -22,6 +22,10 @@ var bullets = [];
 
 var bullet_speed = 12;
 
+var asp = window.innerHeight / surface.height;
+surface.style.height = surface.height * asp;
+surface.style.width = surface.width * asp;
+
 
 // Textures
 function textureLoad()
@@ -43,8 +47,8 @@ addEventListener(
 	'mousemove',
 	function (e)
 	{
-		mouse_x = e.clientX;
-		mouse_y = e.clientY;
+		mouse_x = e.pageX / asp;
+		mouse_y = e.pageY / asp;
 	}
 )
 
@@ -75,8 +79,8 @@ addEventListener(
 	'touchmove',
 	function (e)
 	{
-		mouse_x = e.changedTouches[0].clientX;
-		mouse_y = e.changedTouches[0].clientY;
+		mouse_x = e.changedTouches[0].pageX / asp;
+		mouse_y = e.changedTouches[0].pageY / asp;
 	}
 )
 
