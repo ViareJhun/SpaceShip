@@ -15,8 +15,14 @@ var mouse_check = 0;
 var player_x = 0;
 var player_y = 0;
 
+var player_prev_x = 0;
+var player_prev_y = 0;
+
 var player_reload = 0;
 var player_reload_max = 6;
+
+var player_angle = 0;
+var player_dir = 0;
 
 var bullets = [];
 
@@ -89,6 +95,9 @@ addEventListener(
 	function (e)
 	{
 		mouse_check = 1
+		
+		mouse_x = e.changedTouches[0].pageX / asp;
+		mouse_y = e.changedTouches[0].pageY / asp;
 	}
 )
 
@@ -128,6 +137,18 @@ function update()
 		)
 	);
 	
+	if (Math.abs(player_prev_x - player_x) > 2)
+	{
+		player_dir = -Math.PI * 0.15 * Math.sign(player_prev_x - player_x); 
+	}
+	else
+	{
+		player_dir = 0
+	}
+	player_angle += (
+		player_dir - player_angle
+	) * 0.1
+	
 	if (mouse_check)
 	{
 		if (player_reload == 0)
@@ -138,9 +159,9 @@ function update()
 				new Bullet(
 					player_x,
 					player_y,
-					0,
-					-bullet_speed,
-					0
+					Math.cos(Math.PI * 0.5) * bullet_speed,
+					-Math.sin(Math.PI * 0.5) * bullet_speed,
+					Math.PI * 0.5
 				)
 			);
 			
@@ -148,9 +169,9 @@ function update()
 				new Bullet(
 					player_x,
 					player_y,
-					+Math.cos(Math.PI * 0.5 + Math.PI * 0.05) * bullet_speed,
+					Math.cos(Math.PI * 0.5 + Math.PI * 0.05) * bullet_speed,
 					-Math.sin(Math.PI * 0.5 + Math.PI * 0.05) * bullet_speed,
-					0
+					Math.PI * 0.5 - Math.PI * 0.05
 				)
 			);
 			
@@ -158,13 +179,16 @@ function update()
 				new Bullet(
 					player_x,
 					player_y,
-					+Math.cos(Math.PI * 0.5 - Math.PI * 0.05) * bullet_speed,
+					Math.cos(Math.PI * 0.5 - Math.PI * 0.05) * bullet_speed,
 					-Math.sin(Math.PI * 0.5 - Math.PI * 0.05) * bullet_speed,
-					0
+					Math.PI * 0.5 + Math.PI * 0.05
 				)
 			);
 		}
 	}
+	
+	player_prev_x = player_x
+	player_prev_y = player_y
 	
 	player_reload = Math.max(0, player_reload - 1);
 	
@@ -175,7 +199,7 @@ function update()
 			item.x += item.vec_x;
 			item.y += item.vec_y;
 			
-			item.angle += Math.PI * 0.025;
+			// item.angle += Math.PI * 0.025;
 			
 			var _x = item.x;
 			var _y = item.y;
@@ -204,11 +228,6 @@ function paint()
 	context.fillStyle = "000000";
 	context.fillRect(0, 0, 288, 576);
 	
-	context.save();
-	context.translate(player_x, player_y);
-	context.drawImage(tex['player'], -16, -16);
-	context.restore();
-	
 	bullets.forEach(
 		function (item)
 		{
@@ -219,6 +238,12 @@ function paint()
 			context.restore();
 		}
 	)
+	
+	context.save();
+	context.translate(player_x, player_y);
+	context.rotate(player_angle);
+	context.drawImage(tex['player'], -16, -16);
+	context.restore();
 	
 	requestAnimationFrame(paint);
 }
