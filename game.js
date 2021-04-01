@@ -85,7 +85,7 @@ addEventListener(
 )
 
 addEventListener(
-	'touchdown',
+	'touchstart',
 	function (e)
 	{
 		mouse_check = 1
@@ -93,7 +93,7 @@ addEventListener(
 )
 
 addEventListener(
-	'touchup',
+	'touchend',
 	function (e)
 	{
 		mouse_check = 0
