@@ -19,18 +19,22 @@ var player_prev_x = 0;
 var player_prev_y = 0;
 
 var player_reload = 0;
-var player_reload_max = 6;
+var player_reload_max = 3;
 
 var player_angle = 0;
 var player_dir = 0;
 
 var bullets = [];
 
-var bullet_speed = 12;
+var bullet_speed = 8;
 
-var asp = window.innerHeight / surface.height;
+var bullet_number = 12;
+var bullet_aos = Math.PI * 0.25;
+
+var asp = (window.innerHeight / surface.height) * 1.0;
 surface.style.height = surface.height * asp;
 surface.style.width = surface.width * asp;
+var xdelta = window.innerWidth * 0.5 - surface.width * asp * 0.5;
 
 
 // Textures
@@ -53,7 +57,7 @@ addEventListener(
 	'mousemove',
 	function (e)
 	{
-		mouse_x = e.pageX / asp;
+		mouse_x = e.pageX / asp - xdelta;
 		mouse_y = e.pageY / asp;
 	}
 )
@@ -85,7 +89,7 @@ addEventListener(
 	'touchmove',
 	function (e)
 	{
-		mouse_x = e.changedTouches[0].pageX / asp;
+		mouse_x = e.changedTouches[0].pageX / asp - xdelta;
 		mouse_y = e.changedTouches[0].pageY / asp;
 	}
 )
@@ -96,7 +100,7 @@ addEventListener(
 	{
 		mouse_check = 1
 		
-		mouse_x = e.changedTouches[0].pageX / asp;
+		mouse_x = e.changedTouches[0].pageX / asp - xdelta;
 		mouse_y = e.changedTouches[0].pageY / asp;
 	}
 )
@@ -155,35 +159,21 @@ function update()
 		{
 			player_reload = player_reload_max;
 			
-			bullets.push(
-				new Bullet(
-					player_x,
-					player_y,
-					Math.cos(Math.PI * 0.5) * bullet_speed,
-					-Math.sin(Math.PI * 0.5) * bullet_speed,
-					Math.PI * 0.5
-				)
-			);
-			
-			bullets.push(
-				new Bullet(
-					player_x,
-					player_y,
-					Math.cos(Math.PI * 0.5 + Math.PI * 0.05) * bullet_speed,
-					-Math.sin(Math.PI * 0.5 + Math.PI * 0.05) * bullet_speed,
-					Math.PI * 0.5 - Math.PI * 0.05
-				)
-			);
-			
-			bullets.push(
-				new Bullet(
-					player_x,
-					player_y,
-					Math.cos(Math.PI * 0.5 - Math.PI * 0.05) * bullet_speed,
-					-Math.sin(Math.PI * 0.5 - Math.PI * 0.05) * bullet_speed,
-					Math.PI * 0.5 + Math.PI * 0.05
-				)
-			);
+			for (var i = 0; i < bullet_number; i ++)
+			{
+				var _delta = bullet_aos / bullet_number;
+				var _angle = (_delta * 0.5 - bullet_aos * 0.5) + i * _delta;
+				
+				bullets.push(
+					new Bullet(
+						player_x,
+						player_y,
+						Math.cos(Math.PI * 0.5 + _angle) * bullet_speed,
+						-Math.sin(Math.PI * 0.5 + _angle) * bullet_speed,
+						Math.PI * 0.5 - _angle
+					)
+				);
+			}
 		}
 	}
 	
