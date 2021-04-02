@@ -19,7 +19,7 @@ var player_prev_x = 0;
 var player_prev_y = 0;
 
 var player_reload = 0;
-var player_reload_max = 3;
+var player_reload_max = 4;
 
 var player_angle = 0;
 var player_dir = 0;
@@ -28,12 +28,14 @@ var bullets = [];
 
 var bullet_speed = 8;
 
-var bullet_number = 12;
+var bullet_number = 8;
 var bullet_aos = Math.PI * 0.25;
 
-var asp = (window.innerHeight / surface.height) * 1.0;
-surface.style.height = surface.height * asp;
-surface.style.width = surface.width * asp;
+var wd = surface.width / document.documentElement.clientWidth;
+var hd = surface.height / document.documentElement.clientHeight;
+surface.style.height = document.documentElement.clientHeight;
+surface.style.width = document.documentElement.clientWidth;
+var asp = 1;
 
 
 // Textures
@@ -56,8 +58,8 @@ addEventListener(
 	'mousemove',
 	function (e)
 	{
-		mouse_x = e.pageX / asp;
-		mouse_y = e.pageY / asp;
+		mouse_x = e.clientX * wd;
+		mouse_y = e.clientY * hd;
 	}
 )
 
@@ -88,8 +90,8 @@ addEventListener(
 	'touchmove',
 	function (e)
 	{
-		mouse_x = e.changedTouches[0].pageX / asp;
-		mouse_y = e.changedTouches[0].pageY / asp;
+		mouse_x = e.changedTouches[0].clientX * wd;
+		mouse_y = e.changedTouches[0].clientY * hd;
 	}
 )
 
@@ -99,8 +101,8 @@ addEventListener(
 	{
 		mouse_check = 1
 		
-		mouse_x = e.changedTouches[0].pageX / asp;
-		mouse_y = e.changedTouches[0].pageY / asp;
+		mouse_x = e.changedTouches[0].clientX * wd;
+		mouse_y = e.changedTouches[0].clientY * hd;
 	}
 )
 
@@ -237,9 +239,26 @@ function paint()
 	requestAnimationFrame(paint);
 }
 
+function fullScreen(element)
+{
+	if (element.requestFullscreen)
+	{
+		element.requestFullscreen();
+	}
+	else if (element.webkitrequestFullscreen)
+	{
+		element.webkitRequestFullscreen();
+	}
+	else if (element.mozRequestFullscreen)
+	{
+		element.mozRequestFullScreen();
+	}
+}
+
 
 // Start
 textureLoad();
+fullScreen(surface);
 
 
 requestAnimationFrame(paint);
