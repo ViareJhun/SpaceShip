@@ -31,11 +31,17 @@ var bullet_speed = 8;
 var bullet_number = 8;
 var bullet_aos = Math.PI * 0.25;
 
-var wd = surface.width / document.documentElement.clientWidth;
-var hd = surface.height / document.documentElement.clientHeight;
-surface.style.height = document.documentElement.clientHeight;
-surface.style.width = document.documentElement.clientWidth;
-var asp = 1;
+/*
+var wd = surface.width / window.innerWidth;
+var hd = surface.height / window.innerHeight;
+surface.style.width = window.innerWidth + 'px';
+surface.style.height = window.innerHeight + 'px';
+*/
+var asp = window.innerHeight / surface.height;
+surface.style.height = surface.height * asp + 'px';
+surface.style.width = surface.width * asp + 'px';
+
+document.getElementsByTagName('body')[0].style.margin = '0px';
 
 
 // Textures
@@ -58,8 +64,8 @@ addEventListener(
 	'mousemove',
 	function (e)
 	{
-		mouse_x = e.clientX * wd;
-		mouse_y = e.clientY * hd;
+		mouse_x = e.clientX / asp;
+		mouse_y = e.clientY / asp;
 	}
 )
 
@@ -90,8 +96,8 @@ addEventListener(
 	'touchmove',
 	function (e)
 	{
-		mouse_x = e.changedTouches[0].clientX * wd;
-		mouse_y = e.changedTouches[0].clientY * hd;
+		mouse_x = e.changedTouches[0].clientX / asp;
+		mouse_y = e.changedTouches[0].clientY / asp;
 	}
 )
 
@@ -101,8 +107,8 @@ addEventListener(
 	{
 		mouse_check = 1
 		
-		mouse_x = e.changedTouches[0].clientX * wd;
-		mouse_y = e.changedTouches[0].clientY * hd;
+		mouse_x = e.changedTouches[0].clientX / asp;
+		mouse_y = e.changedTouches[0].clientY / asp;
 	}
 )
 
