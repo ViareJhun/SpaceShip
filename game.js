@@ -239,26 +239,9 @@ function paint()
 	requestAnimationFrame(paint);
 }
 
-function fullScreen(element)
-{
-	if (element.requestFullscreen)
-	{
-		element.requestFullscreen();
-	}
-	else if (element.webkitrequestFullscreen)
-	{
-		element.webkitRequestFullscreen();
-	}
-	else if (element.mozRequestFullscreen)
-	{
-		element.mozRequestFullScreen();
-	}
-}
-
 
 // Start
 textureLoad();
-fullScreen(surface);
 
 
 requestAnimationFrame(paint);
