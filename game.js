@@ -39,7 +39,7 @@ surface.style.height = window.innerHeight + 'px';
 */
 var asp = window.innerHeight / surface.height;
 surface.style.height = surface.height * asp + 'px';
-surface.style.width = surface.width * asp + 'px';
+surface.style.width = Math.min(surface.width * asp, window.innerWidth) + 'px';
 
 document.getElementsByTagName('body')[0].style.margin = '0px';
 surface.style.marginLeft = '0px';
