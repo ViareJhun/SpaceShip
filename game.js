@@ -130,7 +130,7 @@ function update()
 	player_x += (
 		mouse_x - player_x
 	) * 0.6;
-	player_y = 500;
+	player_y = surface.height - 64;
 	
 	player_x = Math.max(
 		16,
@@ -215,7 +215,7 @@ function paint()
 	update();
 	
 	context.fillStyle = "000000";
-	context.fillRect(0, 0, 288, 576);
+	context.fillRect(0, 0, surface.width, surface.height);
 	
 	bullets.forEach(
 		function (item)
