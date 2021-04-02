@@ -42,6 +42,8 @@ surface.style.height = surface.height * asp + 'px';
 surface.style.width = surface.width * asp + 'px';
 
 document.getElementsByTagName('body')[0].style.margin = '0px';
+surface.style.marginLeft = '0px';
+surface.style.marginTop = '0px';
 
 
 // Textures
@@ -222,7 +224,7 @@ function paint()
 {
 	update();
 	
-	context.fillStyle = "000000";
+	context.fillStyle = "#000000";
 	context.fillRect(0, 0, surface.width, surface.height);
 	
 	bullets.forEach(
@@ -241,6 +243,19 @@ function paint()
 	context.rotate(player_angle);
 	context.drawImage(tex['player'], -16, -16);
 	context.restore();
+	
+	context.font = '15px monospace';
+	context.fillStyle = '#FFFFFF';
+	context.fillText(
+		'SW=' + surface.style.width +
+		' SH=' + surface.style.height +
+		' W=' + surface.width + 
+		' H=' + surface.height + 
+		' IW=' + window.innerWidth + 
+		' IH=' + window.innerHeight, 
+		10, 
+		20
+	);
 	
 	requestAnimationFrame(paint);
 }
