@@ -31,15 +31,27 @@ var bullet_speed = 8;
 var bullet_number = 8;
 var bullet_aos = Math.PI * 0.25;
 
-/*
-var wd = surface.width / window.innerWidth;
-var hd = surface.height / window.innerHeight;
-surface.style.width = window.innerWidth + 'px';
-surface.style.height = window.innerHeight + 'px';
-*/
 var asp = window.innerHeight / surface.height;
-surface.style.height = surface.height * asp + 'px';
-surface.style.width = Math.min(surface.width * asp, window.innerWidth) + 'px';
+var vw = surface.width * asp;
+var vh = surface.height * asp;
+var yoffset = 0;
+
+if (vw > window.innerWidth)
+{
+	asp = window.innerWidth / surface.width;
+	vw = surface.width * asp;
+	vh = surface.height * asp;
+	
+	yoffset = (window.innerHeight - vh) / 2;
+}
+
+surface.style.width = vw + 'px';
+surface.style.height = vh + 'px';
+
+surface.style.top = yoffset;
+surface.style.position = 'fixed';
+
+var wd = 0;
 
 document.getElementsByTagName('body')[0].style.margin = '0px';
 surface.style.marginLeft = '0px';
@@ -66,8 +78,8 @@ addEventListener(
 	'mousemove',
 	function (e)
 	{
-		mouse_x = e.clientX / asp;
-		mouse_y = e.clientY / asp;
+		mouse_x = e.pageX / asp - wd;
+		mouse_y = e.pageY / asp;
 	}
 )
 
@@ -98,7 +110,7 @@ addEventListener(
 	'touchmove',
 	function (e)
 	{
-		mouse_x = e.changedTouches[0].clientX / asp;
+		mouse_x = e.changedTouches[0].clientX / asp - wd;
 		mouse_y = e.changedTouches[0].clientY / asp;
 	}
 )
@@ -109,7 +121,7 @@ addEventListener(
 	{
 		mouse_check = 1
 		
-		mouse_x = e.changedTouches[0].clientX / asp;
+		mouse_x = e.changedTouches[0].clientX / asp - wd;
 		mouse_y = e.changedTouches[0].clientY / asp;
 	}
 )
@@ -244,7 +256,7 @@ function paint()
 	context.drawImage(tex['player'], -16, -16);
 	context.restore();
 	
-	context.font = '15px monospace';
+	context.font = '10px monospace';
 	context.fillStyle = '#FFFFFF';
 	context.fillText(
 		'SW=' + surface.style.width +
@@ -255,6 +267,13 @@ function paint()
 		' IH=' + window.innerHeight, 
 		10, 
 		20
+	);
+	context.fillText(
+		'wd=' + wd +
+		' X=' + mouse_x + 
+		' Y=' + mouse_y,
+		10, 
+		30
 	);
 	
 	requestAnimationFrame(paint);
